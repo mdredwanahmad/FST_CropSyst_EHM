@@ -36,7 +36,7 @@
 #   - 0.22 for blueberries and raspberries (default)
 #   - 0.60 for apples
 
-# canopy resistance for vapor conductance (r_canopy):
+# fruit surface resistance for vapor conductance (r_fruit):
 #   - 17958 s/m for blueberry (default)
 #   - 20000 s/m  for apple (calculated from Li et al., (2014))
 #   - 1698.008 s/m  for raspberry (Measured by Shafik)
@@ -53,7 +53,7 @@
 unified_fruit_surface_temp <- function(Tair, RH, u_wind, Jday, SWRad, hour, LAT, LONG, elev,
                                        F_beam = 1, F_d = 1, F_a = 1, F_g = 0, F_r = 0,
                                        fruit_diameter = 0.1, fruit_emissivity = 0.97, fruit_albedo = 0.22, 
-                                       r_canopy = 17958, method = "HS",day_id = NULL) {
+                                       r_fruit = 17958, method = "HS",day_id = NULL) {
   
   # coerce
   # Convert all input variables to numeric value
