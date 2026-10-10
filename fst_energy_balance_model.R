@@ -119,7 +119,7 @@ unified_fruit_surface_temp <- function(Tair, RH, u_wind, Jday, SWRad, hour, LAT,
   conductance_evap <- {
     bound_layer_thickness <- (2.8 * (fruit_diameter / u_wind)^0.5 + 0.25 / u_wind) / 1000
     r_bl <- bound_layer_thickness / pmax(thermal_diff_air, 1e-9)
-    1 / pmax(r_canopy + r_bl, 1e-9)  # m/s
+    1 / pmax(r_fruit + r_bl, 1e-9)  # m/s
   }
   es_blueberry <- function(Tb) 0.611 * exp(17.3*Tb / (Tb + 237.3))  # Saturation vapor pressue of fruit surface temperature, kPa
   
