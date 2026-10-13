@@ -45,10 +45,19 @@
 # For instance, the Sunrise Research Orchard has a longitude of about -120.0685.
 
 
-## This energy balance model is a modified version of the models by Yang et al. (2021)
+## This energy balance model is a enhanced version of the model used by Yang et al. (2021)
 ## and Li et al. (2014), addressing issues found in their previous formulations.
 ## The modifications were made by Md. Redwan Ahmad Khan and Mattew Yourek.
 
+# Model formulation and solution
+################################################################################
+# UNIFIED FRUIT SURFACE TEMPERATURE MODEL
+#
+# Solve the steady-state energy balance for fruit surface temperature (°C).
+# Forcing: air temperature, RH, wind, day of year, shortwave radiation, time,
+# and site coordinates/elevation. Fruit properties and radiation view factors
+# are configurable; day_id groups observations for daily radiation estimates.
+################################################################################
 
 unified_fruit_surface_temp <- function(Tair, RH, u_wind, Jday, SWRad, hour, LAT, LONG, elev,
                                        F_beam = 1, F_d = 1, F_a = 1, F_g = 0, F_r = 0,
