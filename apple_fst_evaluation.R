@@ -13,10 +13,10 @@ library(viridis, warn.conflicts = FALSE)
 library(stringr, warn.conflicts = FALSE)
 library(purrr, warn.conflicts = FALSE)
 library(reshape2, warn.conflicts = FALSE)
-library(readxl, warn.conflicts = FALSE)
+library(readxl, warn.conflicts = FALSE) 
 library(rpart, warn.conflicts = FALSE)
 
-### Set working directory
+### Set working directory for further analysis
 setwd("D:/Extreme_weather/FST_evaluation/")
 
 ################################################################################
