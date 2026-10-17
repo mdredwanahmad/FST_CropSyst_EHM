@@ -89,9 +89,9 @@ Quincy_Apple_combined_2021 <- left_join(Quincy_FST,Quincy_weather) %>% #left_joi
                                                     day_id = Year_day))
 
 
-### Snipes Rd. commercial orchard — 2023
+### A central WA commercial orchard — 2023
 # Prepare Snipes Rd. observed FST and meteorological data
-Snipes_apple <- fread("data/Snipes_combined_2023_control.csv",fill = TRUE, nrows = Inf) %>% 
+centra_wa_apple <- fread("data/Snipes_combined_2023_control.csv",fill = TRUE, nrows = Inf) %>% 
   mutate(lat = 46.2946,
          long = -119.7250,
          elevation = 352,
