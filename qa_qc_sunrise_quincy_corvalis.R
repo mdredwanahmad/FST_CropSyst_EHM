@@ -487,7 +487,11 @@ quincy_normality_1 <- quincy_normality_1 %>%
 ################################################################################
 # CORVALLIS BLUEBERRY — THERMOCOUPLE QUALITY CONTROL
 ################################################################################
-# Load the blueberry thermocouple dataset and identify sensor columns.
+# Please obtain dataset first from Yang et al. (2021)
+# The average of 16 bluberries (thermocouples) are used in Yang et al. (2021) model evaluation
+# columns starts with "D0-E*" matches with their reported figure
+# You can load whole dataset or just 16 columns we used in our analysis that matches with their figure
+# I have used only 16 columns and timesteps columns
 blueberry_all <- fread("data/blueberry_doe16_thermocouples.csv", fill = T, nrows = Inf)
 blueberry_cols_doe <- grep("^D0-", names(blueberry_all), value = TRUE)
 
@@ -525,7 +529,7 @@ blueberry_qc <- bluberry_long %>% filter(flag_MAD==TRUE)
 # Thermocouple IDs selected for exclusion in the screened-maximum summary.
 thermocouples_mad_doe <- c("D0-E-11","D0-E-12","D0-E-8","D0-E-6") #,"D0-E-4"
 
-# Calculate original and sensor-screened maximum FST at each timestamp.
+# Calculate original and sensor-screened maximum FST at each timestemp.
 Blueberry_summary_1 <- blueberry_all %>% 
   rowwise() %>%
   mutate(
@@ -547,6 +551,8 @@ Blueberry_summary_1 <- blueberry_all %>%
     max_maxmad = FST_max - FST_max_madrm) %>%
   ungroup()
 #write.csv(Blueberry_summary_1,"Output_data/Blueberry_summary_1_doe.csv", row.names = F)
+
+## This "Blueberry_summary_1" data set can be saved as "Tberry_full_observed.csv", this "FST_max" can be renamed as "Tmax_doE" or vice versa
 
 # Didn't do any shapiro-wilk or skewness test here for blueberry dataset, as by now we decided to move with MAD based approach for exclusion of thermocouples and directly applied approach here for blueberry
 
