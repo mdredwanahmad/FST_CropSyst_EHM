@@ -172,7 +172,8 @@ Daily_AWN <- AWN_data %>%
                                                            method = "HS",r_fruit = 20000,
                                                            day_id = day_id ))
 
-# Optional: export daily FST summaries after completing the HPC run.
+# Export daily FST summaries after completing the HPC run.
+# This data set is provided in repository so the following section can be reproduced
 #write.csv(Daily_AWN, "/home/mdredwanahmad.khan/Extreme_weather_data/Solar_red_test/calc_FST_daily_AWN.csv", row.names = F)
 
 ################################################################################
@@ -180,6 +181,7 @@ Daily_AWN <- AWN_data %>%
 ################################################################################
 # Run this section after exporting the daily summary from Kamiak.
 # Reload the precomputed file for the methodological comparison and figure.
+# This dataset is provided in repository, so the following analysis can be reproduced
 Daily_AWN<- fread("data/calc_FST_daily_AWN.csv", fill=TRUE, nrows= Inf)
 
 # Group the corresponding apple and blueberry variables by estimation
