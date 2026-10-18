@@ -16,7 +16,8 @@ library(reshape2, warn.conflicts = FALSE)
 library(readxl, warn.conflicts = FALSE) 
 library(rpart, warn.conflicts = FALSE)
 
-### Set working directory for further analysis
+# Set the working directory and ensure all downloaded data is placed in this folder.
+# Important: Run "fst_energy_balance_model.R" first before executing this or any subsequent scripts.
 setwd("D:/Extreme_weather/FST_evaluation/")
 
 ################################################################################
@@ -91,13 +92,14 @@ Quincy_Apple_combined_2021 <- left_join(Quincy_FST,Quincy_weather) %>% #left_joi
 
 ### A central WA commercial orchard — 2023
 # Prepare Snipes Rd. observed FST and meteorological data
-centra_wa_apple <- fread("data/Snipes_combined_2023_control.csv",fill = TRUE, nrows = Inf) %>% 
+centra_wa_apple <- fread("data/central_combined_2023_control.csv",fill = TRUE, nrows = Inf) %>% 
   mutate(lat = 46.2946,
          long = -119.7250,
          elevation = 352,
-         Station = 'Snipes_Rd.',
+         Station = 'Central_WA',
          RelHumidity = RelHumidity*100,
          RelHumidity_2 = RelHumidity_2*100,
+         ## average diameter is the measured diameter at two weeks interval reported at mm, so converting to m.
          avg_dia_1 = avg_dia/1000,
          Year_day = paste0(Year, "_", Jday)) %>% ungroup() %>% 
   # Exclude days with incomplete records before model evaluation
@@ -121,14 +123,14 @@ if (!dir.exists("Figure")) {
 
 ### Representative time-series comparison for selected days at Snipes Rd.
 # create Figure 5 (panel a)
-data_2 <- Snipes_apple %>% filter(Jday %in% c(204:206))
+data_2 <- centra_wa_apple %>% filter(Jday %in% c(204:206))
 P1<- ggplot(data_2)+
   geom_line( aes(x=bin15,y= FST_simulated,color = "Simulated apple FST °C"), group=1)+
   geom_line( aes(x=bin15,y= fruit_t25p,color = "Observed apple FST °C"), group=1)+
   scale_color_manual(values = c(
     "Observed apple FST °C" = "#00BA38","FST P95 °C"='purple',
     "Simulated apple FST °C" = "#0000FF", "FST top 20 mean °C" = "#FFD700", 'Air temperature °C'="#F8766D"))+
-  labs(x= " ", y= "Apple fruit surface temperature °C", title = paste0("Snipes Apple"))+theme_bw()+ 
+  labs(x= " ", y= "Apple fruit surface temperature °C", title = paste0("A Central WA commercial orchard"))+theme_bw()+ 
   theme(plot.title = element_text(size = 20),axis.title = element_text(size = 26), 
         legend.text = element_text(size=18), 
         strip.text = element_text(size=20), legend.title = element_blank(),
@@ -138,7 +140,7 @@ P1<- ggplot(data_2)+
         legend.justification = c(0, 1),
         legend.background = element_blank())
 
-ggsave(P1, file=paste0("Figure/Snipes_apple.png"),width = 30, height = 22,dpi = 300, units = "cm")
+ggsave(P1, file=paste0("Figure/central_WA_apple.png"),width = 30, height = 22,dpi = 300, units = "cm")
 
 
 
@@ -161,8 +163,8 @@ quincy_apple <- Quincy_Apple_combined_2021 %>%
   mutate(diameter = 0.08) %>% 
   rename("FST_max"="FST_max_3sdrm")
 
-# Snipes Rd.: retain variables required for combined evaluation and standardize variable names
-Snipes_Rd <- Snipes_apple %>% 
+# A Central WA Commercial orchard.: retain variables required for combined evaluation and standardize variable names
+central_apple <- centra_wa_apple %>% 
   dplyr::select(c("bin15","Year","Hour","Jday","fruit_t25p","fruit_t20p", "Station","FST_simulated","AirTemp_2",
                   "WindSpeed_2","RelHumidity_2","Solar_2","lat","long","elevation","Station","avg_dia_1")) %>% 
   rename("Observed_FST"="fruit_t25p","FST_max"="fruit_t20p", "Air_temp_C"="AirTemp_2", "Windspeed_ms"="WindSpeed_2","RH"="RelHumidity_2","Solar_Radiation"="Solar_2", "diameter"="avg_dia_1")
@@ -189,7 +191,7 @@ compute_stats <- function(obs, sim) {
 
 
 # Combine the three apple evaluation sites into a single dataset
-list_apple <- list(sunrise_apple,quincy_apple,Snipes_Rd)
+list_apple <- list(sunrise_apple,quincy_apple,central_apple)
 combined_apple<- do.call(rbind,list_apple)
 
 #### Station by station plot
