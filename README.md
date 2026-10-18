@@ -41,7 +41,7 @@ The materials support fruit surface temperature (FST) model evaluation, meteorol
 
 | Script | Purpose |
 | --- | --- |
-| `fst_energy_balance_model.R` | Estimate FST using the fruit energy balance model. |
+| `fst_energy_balance_model.R` | FST energy balance modek implementation|| Estimate FST using the fruit energy balance model. |
 | `apple_fst_evaluation.R` | Evaluate apple FST simulations, calculate performance statistics, and generate associated figures. |
 | `berry_fst_evaluation.R` | Evaluate blueberry and raspberry FST simulations. |
 | `FST_method_comp_AWN.R` | Compare FST estimation methods using AgWeatherNet (AWN) meteorological data. |
@@ -113,8 +113,9 @@ The corresponding CropSyst source code is available from an SVN repository. See 
 
 If you use materials from this repository, please cite the associated manuscript:
 
-*CropSyst-EHM: A Novel Modeling Framework to Quantify Total Crop Water Demand, Including Evapotranspiration and Heat-Stress Management.
+*CropSyst-EHM: A Novel Modeling Framework to Quantify Total Crop Irrigation Water Demand for Evapotranspiration and Heat-Stress Management.
 
 ## Contact
 
 For questions about the model, data, or analysis scripts, please contact the corresponding author of the manuscript.
+Md. Redwan Ahmad Khan (mdredwanahmad.kha@wsu.edu) & Kirti Rajagopalan (kirtir@wsu.edu)
