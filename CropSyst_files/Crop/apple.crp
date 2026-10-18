@@ -1,0 +1,212 @@
+
+[GUI]
+show=FFFF
+
+[version]
+code=1176530273
+program=2020150
+
+[crop]
+description=apple
+model=fruit
+harvested_part=fruit
+abscission=deciduous
+photosynthetic_pathway=C3
+life_cycle=annual
+land_use=FALLOW
+continuation_mode=dormancy
+canopy_growth=canopy_cover_2017
+adjustment:count=2
+linger=90 days
+grain_stress_period:count=0
+
+[water_use_efficiency]
+season2_adj=1.0
+season3_adj=1.0
+season4_adj=1.0
+season5_adj=1.0
+
+[leaf]
+senesces=true
+clip_newest=true
+max_LAI=5.0
+fract_LAI_mature=0.80 0-1
+initial_GAI=0.0110000 m²/m²
+regrowth_GAI=0.0110000 m²/m²
+specific_leaf_area=22.0 m²/kg
+stem_leaf_partition=3.0
+duration=1000.0 Degree days
+duration_stress_sensitivity=0.0 0-3
+
+[transpiration]
+ET_crop_coef=0.95
+max_water_uptake=14.5
+stomatal_closure_leaf_water_pot=-1300.0
+wilt_leaf_water_pot=-1600.0
+
+[growth]
+WUE_changes=false
+efficiency_model=TUE
+TUE_scaling_coef=0.50
+TUE_scaling_coef_veg=0.50
+TUE_at_1pKa_VPD=5.0
+TUE_at_1pKa_VPD_veg=2.5
+RUE_at_low_VPD=1.4
+RUE_at_low_total_solar_rad=4.0
+RUE_efficiency_decrease_rate=0.0
+min=3.0 °C
+low=10.0 °C
+high=25.0 °C
+max=45.0 °C
+LWP_reduces_canopy_expansion=-1200.0 J/kg
+LWP_stops_canopy_expansion=-1400.0 J/kg
+
+[morphology]
+canopy_architecture=false
+max_canopy_height=4.0 m
+
+[canopy_cover]
+light_extinction_coef=0.68
+initial=0.05
+maximum=0.85
+total_season_end=0.85
+green_season_end=0.85
+shape_accrescent=9.0
+shape_senescent=9.0
+rel_TT_at_half_CC_max=0.50 °C-days
+
+[harvest_index]
+unstressed=0.50
+translocation_max=0.40
+adjust_HI=false
+temperature_extreme_response=false
+water_response=false
+temperature_response=false
+water_stress_sensitivity=1.0
+temperature_stress_sensitivity=1.0
+response_temperature_optimum=25.0
+response_temperature_damaging=35.0
+
+[hardiness]
+enabled=false
+damage_cold_temp=-5.0
+lethal_cold_temp=-10.0
+fruit_damage_cold_temp=-5.0
+fruit_lethal_cold_temp=-10.0
+
+[fruit]
+fract_total_solids=0.16
+max_fruit_load=50000.0 kg/ha
+initial_growth_fraction_to_fruit=0.50
+rapid_growth_fraction_to_fruit=0.95
+harvest_temperature=15.0
+harvest_temperature_days=5 Days
+earliest_harvest=258
+latest_harvest=275
+max_water_uptake_before_fruiting=10.0 mm/day
+max_water_uptake_during_initial_fruit=10.0 mm/day
+max_water_uptake_during_radid_fruit=10.0 mm/day
+max_water_uptake_during_veraison=10.0 mm/day
+max_water_uptake_after_maturity=10.0 mm/day
+grape=false
+harvest_condition=management_scheduled
+
+[CO2]
+TUE_reference_conc=398.0 ppm
+RUE_reference_conc=398.0 ppm
+alpha=0.00397
+theta=0.85
+growth_ratio_asymptotic=1.35
+
+[salinity]
+osmotic_pot_50=-0.0000001 kPa
+tolerance_P=0.0000001
+
+[canopy_characteristics]
+initial_width=2.0 m
+final_width=2.0 m
+initial_breadth=0.75 m
+final_breadth=0.75 m
+initial_height=1.5 m
+final_height=1.8 m
+branch_insertion_height=0.3 m
+
+[layout]
+row_spacing=3.5 m
+row_azimuth=0.0 0 = North, 90 = East, 180 = South,  270 = West
+col_spacing=1.0 m
+
+[phenology]
+maturity_significant=true
+clipping_resets=false
+duration.accrescence=350.0
+duration.culminescence=2220.0
+duration.senescence=200.0
+emergence=1.0
+flowering=100.0
+tuber_init=1000.0
+filling=150.0
+rapid_fruit_growth=460.0
+maturity=2000.0 #2200.0 #1900.0
+water_stress_sensitivity=1.0 0-1
+WUE_change=0.0
+thermal_response=linear
+base_temp=6.0
+cutoff_temp=28.0
+optimal_temp=22.0
+maximum_temp=35.0
+
+[root]
+root_sensitivity_water_stress=0.0
+max_root_depth=2.0
+surface_root_density=3.0
+root_density_distribution_curvature=0.10 0.0001-6.0
+root_length_at_emergence=200.0 cm
+root_shoot_emergence_ratio=2.0 ratio
+root_shoot_full_ratio=0.1 ratio
+
+[inactive_period]
+consider_inactive_days=3 days
+inducement_temperature=6 °C
+
+[dormancy]
+senesce=100.0000000 %
+chill_requirement=600.0 Hours
+deg_day_bud_break_chill_req_sat=100.0  #40.0
+deg_day_bud_break_chill_req_not_sat=1000.0
+
+[residue]
+RUSLE2_type=unknown
+fast_cycling_top_fraction=0.50
+slow_cycling_top_fraction=0.40
+lignified_top_fraction=0.10
+fast_cycling_root_fraction=0.50
+slow_cycling_root_fraction=0.30
+lignified_root_fraction=0.20
+fast_cycling_halflife=3.0
+slow_cycling_halflife=6.0
+lignified_halflife=30.0
+detrition_halflife=720.0
+carbon_fraction=0.46
+stubble_area_covered_to_mass_ratio=2.0
+area_covered_to_mass_ratio=4.0
+
+[adjustment:1]
+event_synchronization=thermal_time
+event_thermal_time=2000 #2200 #1900
+reschedule=no
+checked=true
+enabled=true
+parameter=ET_crop_coef
+value=0.65
+
+[adjustment:2]
+event_synchronization=after_fruit_tree_growth_stage
+event_offset=1
+event_phenologic(fruit)=bud_break
+reschedule=once
+checked=true
+enabled=true
+parameter=[ET_crop_coef]
+value=0.95
+
