@@ -123,7 +123,14 @@ historical_comp_v1 <- historical_comp %>%
 dataframe_list <- list(historical_comp_v1,future_comp_v1)
 combined_dataframe <- do.call(rbind,dataframe_list) %>% 
   mutate(time = factor(time, ordered = TRUE, levels =c("hist.","2040s","2080s")),
-         variable1 = paste0(RCP,"_",variable))
+         variable1 = paste0(RCP,"_",variable)) #%>% filter(Grid %in% check_grid)
+
+
+#### Take median across GCM and Years
+# combined_dataframe dataframe can be used to see the whole spread
+median_gcm_year <- combined_dataframe %>% 
+  group_by(timeline,Fruit,RCP,Grid,time,variable,variable1) %>% 
+  summarise(median=  median(value, na.rm=T))
 
 # optional, save the dataframe if needed
 # write.csv(combined_dataframe,"data/irrigation_mm.csv", row.names = F)
@@ -140,13 +147,17 @@ scenario_comb_palette <- c(
   "RCP 8.5_OEC_scenario" = "#CC6600"  # Darker Burnt Orange
 )
 
+median_gcm_year <- combined_dataframe %>% 
+  group_by(timeline,Fruit,RCP,Grid,time,variable,variable1) %>% 
+  summarise(median=  median(value, na.rm=T))
+
 # ANNUAL DEMAND COMPARISON FIGURE
 # Compare annual ET-only and ET+OEC irrigation demand by crop, period, and RCP.
 # Create Figure 8.
-P1<- ggplot(combined_dataframe, aes(x=time,y= value, fill = variable1))+ 
+P1<- ggplot(median_gcm_year, aes(x=time,y= median, fill = variable1))+ 
   geom_boxplot(outlier.shape = NA)+ stat_boxplot(geom='errorbar')+ facet_wrap(~Fruit)+ 
   labs(x= " ", y= "Agricultural water demand (mm)", title = paste0(" "))+ theme_bw()+
-  scale_y_continuous("Agricultural water demand (mm)",limits=c(0,1200), breaks=seq(0,1200, by=200))+
+  scale_y_continuous("Median agricultural water demand (mm)",limits=c(0,900), breaks=seq(0,900, by=100))+
   scale_fill_manual(values = scenario_comb_palette)+
   theme(plot.title = element_text(size = 20),axis.title = element_text(size = 20), 
         legend.text = element_text(size=18), 
@@ -157,27 +168,32 @@ P1<- ggplot(combined_dataframe, aes(x=time,y= value, fill = variable1))+
         legend.justification = c(0, 1))
 
 ## Save figure
-ggsave(P1, file=paste0("Figure/Ir_demand_comp.png"), width = 30, height = 20,dpi = 300, units = "cm")
+ggsave(P1, file=paste0("Figure/Ir_demand_comp_v1.png"), width = 30, height = 20,dpi = 300, units = "cm")
 
 
 
 # Summarize median annual demand and express changes relative to historical
 # baseline ET-only demand for each fruit.
-combined_median <- combined_dataframe %>% 
-  group_by(time,Fruit,RCP, variable) %>% 
+combined_median <- median_gcm_year %>% 
+  group_by(time,Fruit,Grid,RCP, variable) %>% 
   summarise(median_val = median(value, na.rm=T)) %>% 
   pivot_wider(names_from = variable, values_from = median_val) %>% 
-  group_by(Fruit) %>% 
-  mutate(baseline_hist = Baseline_scenario[time == "hist." & RCP == "historical"]) %>% ungroup() %>% 
-  mutate(change_in_baseline  = ((Baseline_scenario - baseline_hist)/baseline_hist)*100,
-         percentage_increase_OEC = ((OEC_scenario - baseline_hist)/baseline_hist)*100)
+  group_by(Fruit, Grid) %>% 
+  mutate(baseline_hist = Baseline_scenario[time == "hist." & RCP == "historical"],
+         OEC_hist = OEC_scenario[time == "hist." & RCP == "historical"]) %>% ungroup() %>% 
+  mutate(ET_change_future = ((Baseline_scenario - baseline_hist)/baseline_hist)*100,
+         OEC_percentage_in_future = ((OEC_scenario - Baseline_scenario)/Baseline_scenario)*100,
+         percentage_increase_total = ((OEC_scenario - OEC_hist)/OEC_hist)*100,
+         OEC_increase_comp_hist_base = ((OEC_scenario - baseline_hist)/baseline_hist)*100,
+         Fruit = factor(Fruit,ordered = TRUE, levels =c("apple","blueberry")))
+#write.csv(combined_median, "Output_data/percentage_demand_change_grid.csv",row.names=F)
 
 
 
 # Tabulate median irrigation demand by crop, RCP, and irrigation scenario.
-median_ir_data <- combined_dataframe %>% 
+median_ir_data <- median_gcm_year %>% 
   #group_by(Fruit,RCP,Grid, variable) %>%
-  group_by(Fruit,RCP, variable) %>%
+  group_by(time, Fruit,RCP, variable) %>%
   summarise( #irrigation_demand_mean = mean(value, na.rm = T),
     irrigation_demand_mead = median(value, na.rm = T)) %>% 
   pivot_wider(names_from = variable,
