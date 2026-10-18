@@ -23,8 +23,9 @@ library(rpart, warn.conflicts = FALSE)
 ################################################################################
 
 # Blueberry FST and meteorological data are from Yang et al. (2021).
-# The original dataset is available upon request from the corresponding author.
+# The original dataset is available upon request from the corresponding author of Yang et al. (2021).
 # Raw data are not hosted in this GitHub repository.
+# Please obtained data from Yang et al. (2021) before running this script
 
 # Load meteorological data for July 16–August 22 and retain the variables
 # required for FST simulation.
@@ -33,18 +34,23 @@ library(rpart, warn.conflicts = FALSE)
 # FST_max_madrm represents the maximum observed FST after MAD-based filtering.
 
 # Load meteorological data from July 16 to August 22 and retain the variables
-# required for FST simulation.
+# Meteorological dataset data set named here  as "model_inputs_full_blueberry.csv" 
+# After obtaining data from Yang et al. (2021), you can rename as you want and load
 blueberry_weather <- read.csv("data/model_inputs_full_blueberry.csv") %>% 
   mutate(Timestamp = mdy_hm(Time)) %>% 
   dplyr::select(c("Timestamp","Jday","Hour","SWRad","Tair","RH","wind"))
 
 # Load observed blueberry FST data and derive time-related variables.
-# FST_max_madrm represents maximum observed FST after MAD-based filtering.
+# The average of 16 bluberries (thermocouples) are used in Yang et al. (2021) model evaluation
+# columns starts with "D0-E*" matches with their reported figure
+# After obtaining data please run "qa_qc_sunrise_quincy_corvalis.R" to remove flagged thermocouples 
+# ensure you have these column in the data set ""Timestamp","Jday","Hour","Tmax_doE","FST_max_madrm"
+# FST_max_madrm represents maximum observed FST after MAD-based filtering/ removing thermocouples.
 blueberry_observed <- read.csv("data/Tberry_full_observed.csv") %>% 
   mutate(Timestamp = mdy_hm(Time),
          Jday = yday(Timestamp),
          Hour = hour(Timestamp)) %>% 
-  dplyr::select(c("Timestamp","Jday","Hour","Tberry_max_all","Tmax_doE","FST_max_madrm"))
+  dplyr::select(c("Timestamp","Jday","Hour","Tmax_doE","FST_max_madrm"))
 
 
 # Merge observed FST and meteorological data using matching timestamps.
